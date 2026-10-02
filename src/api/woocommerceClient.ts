@@ -3,14 +3,16 @@ import { env } from "../config/env.js";
 
 const require = createRequire(import.meta.url);
 
+type WooCommerceResponse = {
+  data: unknown;
+  status: number;
+};
+
 type WooCommerceApi = {
   get(
     endpoint: string,
     params?: Record<string, unknown>
-  ): Promise<{
-    data: unknown;
-    status: number;
-  }>;
+  ): Promise<WooCommerceResponse>;
 };
 
 type WooCommerceApiConstructor = new (options: {
@@ -36,9 +38,24 @@ export class WooCommerceClient {
     });
   }
 
-  async getProducts() {
+  async listProducts(perPage = 10) {
     const response = await this.client.get("products", {
-      per_page: 5
+      per_page: perPage
+    });
+
+    return response.data;
+  }
+
+  async getProduct(productId: number) {
+    const response = await this.client.get(`products/${productId}`);
+
+    return response.data;
+  }
+
+  async searchProducts(search: string, perPage = 10) {
+    const response = await this.client.get("products", {
+      search,
+      per_page: perPage
     });
 
     return response.data;
