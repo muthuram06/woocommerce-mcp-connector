@@ -61,5 +61,49 @@ server.registerTool(
 );
 
 console.error("WooCommerce MCP server starting...");
+server.registerTool(
+  "get_product",
+  {
+    title: "Get WooCommerce Product",
+    description:
+      "Retrieve a single WooCommerce product by its product ID.",
+    inputSchema: z.object({
+      productId: z
+        .number()
+        .int()
+        .positive()
+        .describe("WooCommerce product ID.")
+    })
+  },
+  async ({ productId }) => {
+    try {
+      const product = await productService.getProduct(productId);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(product, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown WooCommerce error";
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Unable to retrieve WooCommerce product: ${message}`
+          }
+        ],
+        isError: true
+      };
+    }
+  }
+);
 
 await serveStdio(() => server);
