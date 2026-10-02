@@ -1,4 +1,3 @@
-```md
 # Capability and Security Boundaries
 
 ## Supported Capabilities
