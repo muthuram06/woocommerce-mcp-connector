@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { env } from "../config/env.js";
+import { withRetry } from "../rateLimit/retry.js";
 
 const require = createRequire(import.meta.url);
 
@@ -47,16 +48,21 @@ export class WooCommerceClient {
   }
 
   async getProduct(productId: number) {
-    const response = await this.client.get(`products/${productId}`);
+    const response = await withRetry(() =>
+        this.client.get(`products/${productId}`)
+);
 
-    return response.data;
-  }
+        return response.data;
+    }
 
   async searchProducts(search: string, perPage = 10) {
-    const response = await this.client.get("products", {
-      search,
-      per_page: perPage
-    });
+    const response = await withRetry(() =>
+    this.client.get("products", {
+        search,
+        per_page: perPage
+    })
+    );
+    
 
     return response.data;
   }
