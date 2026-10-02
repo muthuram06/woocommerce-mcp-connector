@@ -1,0 +1,35 @@
+{
+  "name": "woocommerce-mcp-connector",
+  "version": "1.0.0",
+  "description": "Secure MCP connector for retrieving WooCommerce orders and products through AI agent tools.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "wp-env": "wp-env"
+  },
+  "keywords": [
+    "woocommerce",
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "typescript",
+    "api-connector"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "dotenv": "^18.0.5",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@wordpress/env": "^10.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
