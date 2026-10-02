@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { InsightService } from "../services/insightService.js";
+import { CommerceRadarService } from "../services/commerceRadarService.js";
 import * as z from "zod/v4";
 
 import { WooCommerceClient } from "../api/woocommerceClient.js";
@@ -9,6 +10,8 @@ import { ProductService } from "../services/productService.js";
 const client = new WooCommerceClient();
 const productService = new ProductService(client);
 const insightService = new InsightService(client);
+const commerceRadarService =
+  new CommerceRadarService(client);
 
 const server = new McpServer({
   name: "woocommerce-mcp-connector",
@@ -148,6 +151,45 @@ server.registerTool(
           {
             type: "text",
             text: `Unable to generate store insights: ${message}`
+          }
+        ],
+        isError: true
+      };
+    }
+  }
+);
+
+server.registerTool(
+  "commerce_radar",
+  {
+    title: "WooCommerce Commerce Radar",
+    description:
+      "Scan the WooCommerce store for inventory, catalog, and order issues and return prioritized actionable alerts.",
+    inputSchema: z.object({})
+  },
+  async () => {
+    try {
+      const radar = await commerceRadarService.scan();
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(radar, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown WooCommerce error";
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Unable to scan WooCommerce store: ${message}`
           }
         ],
         isError: true

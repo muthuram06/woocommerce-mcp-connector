@@ -1,38 +1,17 @@
 import { WooCommerceClient } from "./api/woocommerceClient.js";
-import { ProductService } from "./services/productService.js";
+import { OrderService } from "./services/orderService.js";
 
 async function main() {
   const client = new WooCommerceClient();
-  const productService = new ProductService(client);
+  const orderService = new OrderService(client);
 
-  console.log("\n=== LIST PRODUCTS ===");
+  console.log("\n=== LIST ORDERS ===");
 
-  const products = await productService.listProducts(5);
+  const orders = await orderService.listOrders(10);
 
-  for (const product of products) {
+  for (const order of orders) {
     console.log(
-      `${product.id} | ${product.name} | ₹${product.price}`
-    );
-  }
-
-  console.log("\n=== GET PRODUCT ===");
-
-  const product = await productService.getProduct(12);
-
-  console.log({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    stockStatus: product.stock_status
-  });
-
-  console.log("\n=== SEARCH PRODUCTS ===");
-
-  const results = await productService.searchProducts("mouse");
-
-  for (const item of results) {
-    console.log(
-      `${item.id} | ${item.name} | ₹${item.price}`
+      `${order.id} | ${order.status} | ₹${order.total}`
     );
   }
 }

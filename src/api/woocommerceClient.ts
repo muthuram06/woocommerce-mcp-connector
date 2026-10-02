@@ -60,4 +60,27 @@ export class WooCommerceClient {
 
     return response.data;
   }
+
+    async listOrders(perPage = 10) {
+    const response = await this.client.get("orders", {
+      per_page: perPage
+    });
+
+    return response.data;
+  }
+
+  async getOrder(orderId: number) {
+    const response = await this.client.get(`orders/${orderId}`);
+
+    return response.data;
+  }
+
+  async searchOrders(search: string, perPage = 10) {
+    const response = await this.client.get("orders", {
+      search,
+      per_page: perPage
+    });
+
+    return response.data;
+  }
 }
