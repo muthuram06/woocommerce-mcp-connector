@@ -6,10 +6,11 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx src/index.ts",
+    "mcp:dev": "tsx src/mcp/server.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit",
-    "wp-env": "wp-env"
+    "mcp:start": "node dist/mcp/server.js",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "woocommerce",
@@ -22,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.2.0",
     "@woocommerce/woocommerce-rest-api": "^1.0.2",
     "dotenv": "^18.0.5",
     "zod": "^4.6.5"
