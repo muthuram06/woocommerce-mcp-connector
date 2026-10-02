@@ -52,7 +52,6 @@ Search         Search  Radar        Sales     Backoff  Handling
                     WooCommerce
 
 
-```md
 ## AI Agent Demonstration
 
 The connector is designed to be consumed by an AI agent through MCP.
