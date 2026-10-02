@@ -10,7 +10,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "mcp:start": "node dist/mcp/server.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "keywords": [
     "woocommerce",
@@ -32,6 +33,7 @@
     "@types/node": "^26.6.4",
     "@wordpress/env": "^10.0.0",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   }
 }

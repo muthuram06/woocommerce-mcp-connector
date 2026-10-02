@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { InsightService } from "../services/insightService.js";
 import { CommerceRadarService } from "../services/commerceRadarService.js";
+import { SalesIntelligenceService } from "../services/salesIntelligenceService.js";
 import * as z from "zod/v4";
 
 import { WooCommerceClient } from "../api/woocommerceClient.js";
@@ -12,7 +13,6 @@ const productService = new ProductService(client);
 const insightService = new InsightService(client);
 const commerceRadarService =
   new CommerceRadarService(client);
-
 const server = new McpServer({
   name: "woocommerce-mcp-connector",
   version: "1.0.0"
@@ -64,6 +64,9 @@ server.registerTool(
     }
   }
 );
+
+const salesIntelligenceService =
+  new SalesIntelligenceService(client);
 
 server.registerTool(
   "search_products",
