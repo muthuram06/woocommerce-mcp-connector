@@ -1,22 +1,24 @@
-import { WooCommerceClient } from "./api/woocommerceClient.js";
-import { OrderService } from "./services/orderService.js";
+console.log(`
+WooCommerce MCP Connector
+=========================
 
-async function main() {
-  const client = new WooCommerceClient();
-  const orderService = new OrderService(client);
+Secure, read-only MCP connector for WooCommerce.
 
-  console.log("\n=== LIST ORDERS ===");
+Available capabilities:
+- Product listing
+- Product lookup
+- Product search
+- Order listing
+- Order lookup
+- Order search
+- Store insights
+- Commerce radar
+- Sales intelligence
 
-  const orders = await orderService.listOrders(10);
+MCP server:
+  npm run mcp:dev
 
-  for (const order of orders) {
-    console.log(
-      `${order.id} | ${order.status} | ₹${order.total}`
-    );
-  }
-}
-
-main().catch((error) => {
-  console.error("Application failed:", error);
-  process.exit(1);
-});
+Production:
+  npm run build
+  npm run mcp:start
+`);
