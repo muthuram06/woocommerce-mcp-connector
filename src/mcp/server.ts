@@ -60,6 +60,61 @@ server.registerTool(
   }
 );
 
+server.registerTool(
+  "search_products",
+  {
+    title: "Search WooCommerce Products",
+    description:
+      "Search WooCommerce products by name or keyword.",
+    inputSchema: z.object({
+      search: z
+        .string()
+        .min(1)
+        .max(100)
+        .describe("Product name or keyword to search for."),
+      perPage: z
+        .number()
+        .int()
+        .min(1)
+        .max(50)
+        .optional()
+        .describe("Maximum number of matching products to return.")
+    })
+  },
+  async ({ search, perPage }) => {
+    try {
+      const products = await productService.searchProducts(
+        search,
+        perPage ?? 10
+      );
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(products, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown WooCommerce error";
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Unable to search WooCommerce products: ${message}`
+          }
+        ],
+        isError: true
+      };
+    }
+  }
+);
+
 console.error("WooCommerce MCP server starting...");
 server.registerTool(
   "get_product",
