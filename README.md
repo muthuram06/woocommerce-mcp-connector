@@ -80,3 +80,12 @@ Low-stock products: 0
 
 Operational alerts:
 No high-priority inventory issues detected.
+
+## MCP Demonstration
+
+The connector can be tested locally using MCP Inspector.
+
+Start the MCP server through the Inspector:
+
+```bash
+npx @modelcontextprotocol/inspector npx tsx src/mcp/server.ts
