@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { InsightService } from "../services/insightService.js";
 import * as z from "zod/v4";
 
 import { WooCommerceClient } from "../api/woocommerceClient.js";
@@ -7,6 +8,7 @@ import { ProductService } from "../services/productService.js";
 
 const client = new WooCommerceClient();
 const productService = new ProductService(client);
+const insightService = new InsightService(client);
 
 const server = new McpServer({
   name: "woocommerce-mcp-connector",
@@ -107,6 +109,45 @@ server.registerTool(
           {
             type: "text",
             text: `Unable to search WooCommerce products: ${message}`
+          }
+        ],
+        isError: true
+      };
+    }
+  }
+);
+
+server.registerTool(
+  "store_insights",
+  {
+    title: "WooCommerce Store Insights",
+    description:
+      "Generate a privacy-safe summary of WooCommerce product inventory, order activity, and completed sales.",
+    inputSchema: z.object({})
+  },
+  async () => {
+    try {
+      const insights = await insightService.getStoreInsights();
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(insights, null, 2)
+          }
+        ]
+      };
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Unknown WooCommerce error";
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Unable to generate store insights: ${message}`
           }
         ],
         isError: true
